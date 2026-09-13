@@ -1,0 +1,55 @@
+name: AgroShield Mesh CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install fastapi uvicorn pydantic sqlalchemy shapely pyjwt bcrypt sentence-transformers numpy pytest pytest-asyncio httpx
+
+      - name: Run Secret Security Scan
+        run: |
+          python scripts/scan_secrets.py
+
+      - name: Run Pytest Test Suite
+        run: |
+          python -m pytest tests/ -v
+
+      - name: Run 100-Scenario Benchmarks
+        run: |
+          python benchmarks/run_benchmarks.py
+
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Build Frontend Bundle
+        working-directory: ./frontend
+        run: npm run build

@@ -1,0 +1,30 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies for geospatial and networking
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    libgdal-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy dependencies
+COPY backend/ backend/
+COPY geospatial/ geospatial/
+COPY rag/ rag/
+COPY agents/ agents/
+COPY mcp_server/ mcp_server/
+COPY sample_data/ sample_data/
+COPY benchmarks/ benchmarks/
+COPY scripts/ scripts/
+
+# Install python packages
+RUN pip install --no-cache-dir \
+    fastapi uvicorn pydantic pydantic-settings sqlalchemy psycopg2-binary \
+    shapely pyjwt bcrypt passlib sentence-transformers numpy pytest httpx
+
+EXPOSE 8000
+
+CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]

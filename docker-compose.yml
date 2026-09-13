@@ -1,0 +1,82 @@
+version: "3.9"
+
+services:
+  # 1. PostgreSQL with PostGIS
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: agroshield-postgis
+    environment:
+      POSTGRES_USER: agroshield
+      POSTGRES_PASSWORD: agroshield_secure_db_pass_2026
+      POSTGRES_DB: agroshield_mesh
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgis_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agroshield -d agroshield_mesh"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: agroshield-redis
+    ports:
+      - "6379:6379"
+
+  # 3. Mosquitto MQTT Broker (IoT Mesh Telemetry)
+  mqtt:
+    image: eclipse-mosquitto:2
+    container_name: agroshield-mqtt
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+
+  # 4. AgroShield Backend (FastAPI + Bounded Agents + RAG)
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: agroshield-backend
+    environment:
+      DATABASE_URL: postgresql://agroshield:agroshield_secure_db_pass_2026@db:5432/agroshield_mesh
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: agroshield-mesh-secure-production-secret-key-2026-xyz-unhackable
+      ENVIRONMENT: production
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  # 5. AgroShield Frontend (React + Vite + Tailwind + Leaflet)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../Dockerfile.frontend
+    container_name: agroshield-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+  # 6. n8n Automation Community Edition
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: agroshield-n8n
+    environment:
+      N8N_BASIC_AUTH_ACTIVE: "false"
+      GENERIC_TIMEZONE: "Asia/Kolkata"
+      WEBHOOK_URL: "http://localhost:5678/"
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+volumes:
+  postgis_data:
+  n8n_data:
