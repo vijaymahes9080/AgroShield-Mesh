@@ -1,17 +1,25 @@
 # 🌾 AGROSHIELD MESH
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.11](https://img.shields.io/badge/Python-3.11%2B-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-teal.svg)](https://fastapi.tiangolo.com/)
-[![React 19 + Vite](https://img.shields.io/badge/Frontend-React%2019%20%2B%20Vite-cyan.svg)](https://vitejs.dev/)
-[![Tailwind CSS v4](https://img.shields.io/badge/Styling-Tailwind%20CSS-sky.svg)](https://tailwindcss.com/)
-[![Leaflet GIS](https://img.shields.io/badge/Geospatial-Leaflet%20%2B%20Shapely-green.svg)](https://leafletjs.com/)
-[![MCP SDK](https://img.shields.io/badge/Protocol-Model%20Context%20Protocol-purple.svg)](https://modelcontextprotocol.io/)
-[![n8n Workflow](https://img.shields.io/badge/Automation-n8n%20Community-orange.svg)](https://n8n.io/)
-[![CI Tests](https://img.shields.io/badge/Tests-21%2F21%20Passed-brightgreen.svg)]()
-[![Benchmarks](https://img.shields.io/badge/100--Scenario%20Benchmarks-Targets%20Met-success.svg)]()
+<p align="center">
+  <a href="https://github.com/vijaymahes9080/AgroShield-Mesh">
+    <img src="docs/images/hero_banner.jpg" alt="AgroShield Mesh Architecture & Smart Farm IoT" width="100%" />
+  </a>
+</p>
 
-> **Evidence-Grounded Agricultural Intelligence & Bounded Risk Engine**
+<p align="center">
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-emerald.svg" alt="License: MIT" /></a>
+  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.11%2B-blue.svg" alt="Python 3.11+" /></a>
+  <a href="https://fastapi.tiangolo.com/"><img src="https://img.shields.io/badge/Backend-FastAPI-teal.svg" alt="FastAPI" /></a>
+  <a href="https://vitejs.dev/"><img src="https://img.shields.io/badge/Frontend-React%2019%20%2B%20Vite-cyan.svg" alt="React 19" /></a>
+  <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Styling-Tailwind%20CSS-sky.svg" alt="Tailwind CSS" /></a>
+  <a href="https://leafletjs.com/"><img src="https://img.shields.io/badge/Geospatial-Leaflet%20%2B%20Shapely-green.svg" alt="Leaflet GIS" /></a>
+  <a href="https://modelcontextprotocol.io/"><img src="https://img.shields.io/badge/Protocol-Model%20Context%20Protocol-purple.svg" alt="MCP SDK" /></a>
+  <a href="https://n8n.io/"><img src="https://img.shields.io/badge/Automation-n8n%20Community-orange.svg" alt="n8n" /></a>
+  <img src="https://img.shields.io/badge/Tests-21%2F21%20Passed-brightgreen.svg" alt="CI Tests" />
+  <img src="https://img.shields.io/badge/100--Scenario%20Benchmarks-Targets%20Met-success.svg" alt="Benchmarks" />
+</p>
+
+> **Evidence-Grounded Agricultural Intelligence & Bounded Risk Engine**  
 > Integrating IoT wireless mesh telemetry, satellite multispectral observations, deterministic agronomic risk models, Agricultural RAG with university citations, and an accredited Expert Review Gate.
 
 ---
@@ -59,6 +67,19 @@ Farmer / Sensor / Satellite / Weather
 
 ---
 
+## 🌾 Bilingual Decision Support & Expert Review Gate
+
+<p align="center">
+  <img src="docs/images/advisory_ui.jpg" alt="Bilingual Agricultural Advisory with Expert Review Gate" width="100%" />
+</p>
+
+The platform generates evidence-grounded advisories in **English** and **தமிழ் (Tamil)** with transparent, mathematically grounded metrics:
+- **Alternate Wetting and Drying (AWD)**: Prescribes water-saving intermittent submergence rather than continuous ponding.
+- **Microclimate Canopy Management**: Recommends foliar nutrient cooling (e.g., 1% KCl spray during flowering heat stress).
+- **Accredited Agronomist Review Gate**: Any advisory with elevated risk is quarantined in `pending_review` until a verified human expert approves it.
+
+---
+
 ## 🛡️ Core Safety Rules & Agronomic Guardrails
 
 - **No False Certainty**: Biological systems vary with root depth and microclimate. Every advisory explicitly reports a confidence level (0.0–1.0) and missing-data penalties.
@@ -67,6 +88,21 @@ Farmer / Sensor / Satellite / Weather
 - **Mandatory Source Citations**: Every guidance-based recommendation requires verifiable citations with document section, page number, and cryptographic SHA-256 hash (TNAU, ICAR, IMD).
 - **Mandatory Expert Review Gate**: Any advisory flagged with **HIGH** or **CRITICAL** risk is held in `pending_review` until signed off by an accredited human agronomist.
 - **Privacy & PII Masking**: Farmer phone numbers and personal emails are masked before telemetry storage or logging.
+
+---
+
+## 🗺️ Interactive Cadastral GIS & Sentinel-2 NDVI Analytics
+
+<p align="center">
+  <img src="docs/images/gis_ndvi_map.jpg" alt="Precision Cadastral GIS & Sentinel-2 NDVI Analytics" width="100%" />
+</p>
+
+- **EPSG:4326 (WGS 84)**: All GeoJSON polygons, field centroids, and GPS coordinates.
+- **EPSG:3857 (Web Mercator)**: Projected coordinate calculations for metric buffers.
+- **Multispectral Sentinel-2 Vegetation Index**:
+  $$\text{NDVI} = \frac{\text{NIR (B8)} - \text{Red (B4)}}{\text{NIR (B8)} + \text{Red (B4)}}$$
+- **Normalized Difference Water Index (NDWI)**:
+  $$\text{NDWI} = \frac{\text{NIR (B8)} - \text{SWIR (B11)}}{\text{NIR (B8)} + \text{SWIR (B11)}}$$
 
 ---
 
@@ -91,6 +127,16 @@ The system was evaluated against **100 synthetic scenarios** across 5 agro-clima
 
 ---
 
+## 📸 Full Project Showcase Banner
+
+<p align="center">
+  <img src="image.png" alt="AgroShield Mesh Full Project Architecture & Benchmarks" width="100%" />
+</p>
+
+> 📢 **LinkedIn Launch Announcement**: A ready-to-publish, high-impact post with tags and story is available in [`linkedin.md`](linkedin.md).
+
+---
+
 ## 🗂️ Repository Structure
 
 ```
@@ -105,8 +151,10 @@ The system was evaluated against **100 synthetic scenarios** across 5 agro-clima
 ├── sample_data/              # Sample GeoJSON cadastral boundaries & telemetry payloads
 ├── benchmarks/               # 100 synthetic scenarios & automated evaluation runner
 ├── tests/                    # 21 comprehensive Pytest unit & integration tests (100% pass)
-├── docs/                     # Architecture, Geospatial CRS, Safety Rules, API Reference
+├── docs/                     # Architecture, Geospatial CRS, Safety Rules, API Reference, Images
 ├── scripts/                  # Database seeder, secret scanner, n8n simulator, e2e demo
+├── image.png                 # LinkedIn project showcase presentation banner
+├── linkedin.md               # Ready-to-publish LinkedIn announcement article
 ├── docker-compose.yml        # PostgreSQL/PostGIS, Redis, Mosquitto MQTT, n8n, Backend, Frontend
 └── README.md
 ```
@@ -186,15 +234,6 @@ Run the standalone simulator without needing an active n8n instance:
 ```bash
 python scripts/simulate_n8n_flow.py
 ```
-
----
-
-## 🌐 Geospatial Standards & Coordinate Reference Systems
-
-- **EPSG:4326 (WGS 84)**: All GeoJSON polygons, field centroids, and GPS coordinates.
-- **EPSG:3857 (Web Mercator)**: Projected coordinate calculations for metric buffers.
-- **Synthetic NDVI**: Multispectral Sentinel-2 reflectance computation:
-  $$\text{NDVI} = \frac{\text{NIR (B8)} - \text{Red (B4)}}{\text{NIR (B8)} + \text{Red (B4)}}$$
 
 ---
 
