@@ -1,0 +1,50 @@
+{
+  "timestamp": "2026-09-13T02:13:14Z",
+  "total_scenarios_evaluated": 100,
+  "execution_duration_seconds": 0.03,
+  "metrics": {
+    "irrigation_agreement_pct": 97.0,
+    "irrigation_target_pct": 80.0,
+    "irrigation_target_met": true,
+    "risk_classification_accuracy_pct": 84.0,
+    "risk_target_pct": 75.0,
+    "risk_target_met": true,
+    "citation_coverage_pct": 100.0,
+    "citation_target_pct": 90.0,
+    "citation_target_met": true,
+    "false_alert_rate_pct": 0.0,
+    "false_alert_target_max_pct": 15.0,
+    "false_alert_target_met": true,
+    "avg_advisory_latency_seconds": 0.0,
+    "max_advisory_latency_seconds": 0.008,
+    "latency_target_max_seconds": 30.0,
+    "latency_target_met": true
+  },
+  "category_breakdown": {
+    "irrigation": {
+      "total": 30,
+      "risk_correct": 16,
+      "irrigation_correct": 27
+    },
+    "drought": {
+      "total": 20,
+      "risk_correct": 18,
+      "irrigation_correct": 20
+    },
+    "excess_rain": {
+      "total": 20,
+      "risk_correct": 20,
+      "irrigation_correct": 20
+    },
+    "contradictory_sensor": {
+      "total": 20,
+      "risk_correct": 20,
+      "irrigation_correct": 20
+    },
+    "multilingual": {
+      "total": 10,
+      "risk_correct": 10,
+      "irrigation_correct": 10
+    }
+  }
+}
