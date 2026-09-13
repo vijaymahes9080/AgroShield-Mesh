@@ -1,0 +1,13 @@
+{
+    "name": "vijaymahes/agroshield-mesh",
+    "description": "AgroShield-Mesh - Smart Agricultural Protection and Mesh Monitoring Network",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vijay Mahes",
+            "email": "Vijaypradhap2004@gmail.com"
+        }
+    ],
+    "require": {}
+}
