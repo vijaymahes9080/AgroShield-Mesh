@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { RiskRadar } from '../components/RiskRadar';
 import { Language, translations } from '../i18n/translations';
 import { ShieldCheck, Play } from 'lucide-react';
+import { fetchFieldRisk } from '../services/api';
 
 interface CropRiskTabProps {
   fields: any[];
@@ -33,14 +34,11 @@ export const CropRiskTab: React.FC<CropRiskTabProps> = ({
 
   const loadFieldRisk = async (fId: string) => {
     try {
-      const res = await fetch(`/api/v1/fields/${fId}/risk-assessments?limit=1`);
-      if (res.ok) {
-        const data = await res.json();
-        if (data.length > 0) {
-          setRiskData(data[0]);
-        } else {
-          setRiskData(null);
-        }
+      const data = await fetchFieldRisk(fId);
+      if (data && data.length > 0) {
+        setRiskData(data[0]);
+      } else {
+        setRiskData(null);
       }
     } catch (e) {
       console.error(e);
