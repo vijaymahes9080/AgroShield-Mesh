@@ -1,0 +1,146 @@
+{
+  "name": "AgroShield Mesh - Autonomous Advisory & Review Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "agroshield-sensor-webhook",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "1",
+      "name": "Sensor/Telemetry Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Idempotency & Validation Guard\nconst payload = items[0].json.body || items[0].json;\nif (!payload.field_id || payload.soil_moisture_pct === undefined) {\n  throw new Error('Validation failed: Missing required field_id or soil_moisture_pct');\n}\nconst idempotencyKey = `${payload.field_id}_${payload.timestamp || new Date().toISOString()}`;\nreturn [{ json: { ...payload, idempotency_key: idempotencyKey, validated_at: new Date().toISOString() } }];"
+      },
+      "id": "2",
+      "name": "Validate & Generate Idempotency Key",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:8000/api/v1/sensor-readings",
+        "method": "POST",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "field_id", "value": "={{$json.field_id}}" },
+            { "name": "device_id", "value": "={{$json.device_id || 'NODE-N8N-01'}}" },
+            { "name": "soil_moisture_pct", "value": "={{$json.soil_moisture_pct}}" },
+            { "name": "soil_temperature_c", "value": "={{$json.soil_temperature_c || 28.0}}" },
+            { "name": "ambient_temperature_c", "value": "={{$json.ambient_temperature_c || 34.0}}" },
+            { "name": "ambient_humidity_pct", "value": "={{$json.ambient_humidity_pct || 65.0}}" }
+          ]
+        },
+        "options": {
+          "retry": {
+            "maxRetries": 3,
+            "retryInterval": 1000
+          },
+          "timeout": 5000
+        }
+      },
+      "id": "3",
+      "name": "Store Sensor Ingestion (Backend API)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "url": "=http://localhost:8000/api/v1/advisories?field_id={{$json.field_id}}&language=ta",
+        "method": "POST",
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "4",
+      "name": "Trigger Bounded Advisory Agent",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$json.requires_human_review}}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "5",
+      "name": "Check Human Review Gate",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Route to Agronomist Expert Queue\nconst adv = items[0].json;\nreturn [{\n  json: {\n    status: 'routed_to_expert_gate',\n    review_url: `http://localhost:5173/advisories`,\n    advisory_id: adv.id,\n    title: adv.title,\n    confidence: adv.confidence_level,\n    action: 'Queued for human expert approval before sending to farmer.'\n  }\n}];"
+      },
+      "id": "6",
+      "name": "Queue for Expert Agronomist Review",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1360, 200]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Mock SMS & WhatsApp Notification Dispatch\nconst adv = items[0].json;\nreturn [{\n  json: {\n    status: 'dispatched_mock_notification',\n    channel: 'SMS_AND_WHATSAPP_MOCK',\n    recipient: '+91 98*** **210',\n    language: adv.language,\n    message_title: adv.title,\n    summary: adv.summary,\n    disclaimer: adv.disclaimer,\n    mock_delivered_at: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "7",
+      "name": "Dispatch Mock Farmer Notification",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1360, 420]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Error Handler Branch\nconst error = items[0].json;\nreturn [{\n  json: {\n    workflow_status: 'failed',\n    error_message: error.message || 'Workflow pipeline failure',\n    timestamp: new Date().toISOString(),\n    fallback: 'Flagged for system engineer audit.'\n  }\n}];"
+      },
+      "id": "8",
+      "name": "Failure Fallback Branch",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [680, 520]
+    }
+  ],
+  "connections": {
+    "Sensor/Telemetry Webhook Trigger": {
+      "main": [
+        [{ "node": "Validate & Generate Idempotency Key", "type": "main", "index": 0 }]
+      ]
+    },
+    "Validate & Generate Idempotency Key": {
+      "main": [
+        [{ "node": "Store Sensor Ingestion (Backend API)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Store Sensor Ingestion (Backend API)": {
+      "main": [
+        [{ "node": "Trigger Bounded Advisory Agent", "type": "main", "index": 0 }]
+      ]
+    },
+    "Trigger Bounded Advisory Agent": {
+      "main": [
+        [{ "node": "Check Human Review Gate", "type": "main", "index": 0 }]
+      ]
+    },
+    "Check Human Review Gate": {
+      "main": [
+        [{ "node": "Queue for Expert Agronomist Review", "type": "main", "index": 0 }],
+        [{ "node": "Dispatch Mock Farmer Notification", "type": "main", "index": 0 }]
+      ]
+    }
+  }
+}
