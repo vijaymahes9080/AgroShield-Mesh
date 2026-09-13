@@ -51,7 +51,13 @@ desktop.ini
 .env.local
 .env.*.local
 
-# Pytest / Coverage
+# Pytest / Coverage / Linter
 .pytest_cache/
 .coverage
 htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Logs
+*.log
+

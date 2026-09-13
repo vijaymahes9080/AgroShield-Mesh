@@ -209,4 +209,4 @@ Repository: [AgroShield-Mesh](https://github.com/vijaymahes9080/AgroShield-Mesh)
 
 ## 📄 License
 
-This project is licensed under the **MIT License** — see the [LICENSE](file:///d:/current%20project/zz/LICENSE) file for details.
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
